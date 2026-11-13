@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#C8102E">
+<meta name="description" content="Pronto-Socorro de Bolso: orientações de primeiros socorros passo a passo. Projeto FMU Tech, ODS 3.">
+<title>Pronto-Socorro de Bolso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   1. TOKENS DE DESIGN (tema claro é o padrão)
+   ========================================================= */
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#E9EDF2; --ink:#13203A; --muted:#536079;
+  --line:#D6DCE5; --red:#C8102E; --red-text:#B10E28; --red-soft:#FCE9EC; --on-red:#FFFFFF;
+  --green:#0B7A55; --green-soft:#E2F3EB; --amber:#9A5B00; --amber-soft:#FDF0D8;
+  --blue:#1E63A8; --blue-soft:#E3EEF9; --violet:#5E45B0; --violet-soft:#EEEAFA;
+  --focus:#1D5FD6; --shadow:0 1px 2px rgba(19,32,58,.06),0 6px 18px rgba(19,32,58,.07);
+  --header-bg:rgba(243,245,248,.88);
+  --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-display:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C131F; --surface:#141D2C; --surface-2:#1B2638; --ink:#E9EFF7; --muted:#9BA9BE;
+    --line:#29364D; --red:#E0303F; --red-text:#FF7D88; --red-soft:#3A1820; --on-red:#FFFFFF;
+    --green:#4CCB98; --green-soft:#0F2F28; --amber:#F2B544; --amber-soft:#362A10;
+    --blue:#6FB1F2; --blue-soft:#132A42; --violet:#B3A0F5; --violet-soft:#241D40;
+    --focus:#7FB2FF; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.28);
+    --header-bg:rgba(12,19,31,.86);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C131F; --surface:#141D2C; --surface-2:#1B2638; --ink:#E9EFF7; --muted:#9BA9BE;
+  --line:#29364D; --red:#E0303F; --red-text:#FF7D88; --red-soft:#3A1820; --on-red:#FFFFFF;
+  --green:#4CCB98; --green-soft:#0F2F28; --amber:#F2B544; --amber-soft:#362A10;
+  --blue:#6FB1F2; --blue-soft:#132A42; --violet:#B3A0F5; --violet-soft:#241D40;
+  --focus:#7FB2FF; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.28);
+  --header-bg:rgba(12,19,31,.86);
+  color-scheme:dark;
+}
+
+/* =========================================================
+   2. BASE
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);
+  font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;
+  background:var(--header-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+img,svg{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.icon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+h1,h2,h3{font-family:var(--font-display);line-height:1.05;margin:0;letter-spacing:.005em}
+
+/* =========================================================
+   3. CABEÇALHO
+   ========================================================= */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--header-bg);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:980px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.brand-mark{width:36px;height:36px;border-radius:10px;background:var(--red);display:grid;place-items:center;color:var(--on-red)}
+.brand-name{font-family:var(--font-display);font-weight:800;font-size:1.45rem;line-height:1}
+.brand-name small{display:block;font-family:var(--font-body);font-weight:400;font-size:.72rem;color:var(--muted);letter-spacing:0;margin-top:2px}
+.theme-btn{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);
+  border-radius:999px;padding:7px 12px 7px 9px;cursor:pointer;font-size:.9rem}
+.theme-btn:hover{border-color:var(--muted)}
+.call-mini{display:flex;align-items:center;gap:6px;background:var(--red);color:var(--on-red);text-decoration:none;
+  border-radius:999px;padding:7px 14px 7px 11px;font-weight:700;font-size:.95rem}
+
+/* =========================================================
+   4. LAYOUT PRINCIPAL
+   ========================================================= */
+main{max-width:980px;margin:0 auto;padding:18px 18px calc(110px + env(safe-area-inset-bottom,0px))}
+.view-title{font-size:2.1rem;font-weight:800;margin:6px 0 4px}
+.view-lead{color:var(--muted);margin:0 0 18px;max-width:62ch}
+
+/* ---------- Bloco SOS (elemento de destaque) ---------- */
+.sos{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:22px}
+.sos-call{position:relative;display:flex;align-items:center;gap:18px;text-decoration:none;background:var(--red);
+  color:var(--on-red);border-radius:22px;padding:20px 22px;overflow:hidden;min-height:118px}
+.sos-call::after{content:"";position:absolute;right:-40px;top:50%;width:220px;height:220px;transform:translateY(-50%);
+  border-radius:50%;border:26px solid rgba(255,255,255,.10)}
+.sos-num{font-family:var(--font-display);font-weight:800;font-size:4.6rem;line-height:.85;letter-spacing:-.01em}
+.sos-text{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
+.sos-text strong{font-size:1.2rem}
+.sos-text span{opacity:.92;font-size:.95rem}
+.sos-ring{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:none;position:relative;z-index:1}
+.sos-ring .icon{width:32px;height:32px}
+.sos-ring::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.sos-side{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sos-alt{display:flex;flex-direction:column;justify-content:space-between;gap:10px;text-decoration:none;background:var(--surface);
+  border:1px solid var(--line);border-radius:18px;padding:14px 16px;min-height:96px}
+.sos-alt b{font-family:var(--font-display);font-size:1.35rem;line-height:1.05}
+.sos-alt span{color:var(--muted);font-size:.88rem;line-height:1.35}
+.sos-alt .icon{color:var(--red-text)}
+@media (min-width:760px){.sos{grid-template-columns:1.35fr 1fr}.sos-call{min-height:100%}}
+
+/* ---------- Busca e filtros ---------- */
+.search{position:relative;margin-bottom:14px}
+.search .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 14px 14px 46px;font-size:1.05rem}
+.search input:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.93rem;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ---------- Grade de situações ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.tile{display:flex;gap:14px;align-items:flex-start;text-align:left;text-decoration:none;background:var(--surface);
+  border:1px solid var(--line);border-radius:16px;padding:14px;position:relative}
+.tile:hover{border-color:var(--muted)}
+.tile-ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--c-soft);color:var(--c)}
+.tile h3{font-size:1.32rem;font-weight:700;margin-bottom:3px}
+.tile p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}
+.tile .flag{position:absolute;top:12px;right:12px;width:9px;height:9px;border-radius:50%;background:var(--red)}
+.empty{background:var(--surface);border:1.5px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
+.empty a{color:var(--red-text);font-weight:700}
+
+.cat-coracao{--c:var(--red-text);--c-soft:var(--red-soft)}
+.cat-respiracao{--c:var(--blue);--c-soft:var(--blue-soft)}
+.cat-ferimentos{--c:var(--amber);--c-soft:var(--amber-soft)}
+.cat-acidentes{--c:var(--violet);--c-soft:var(--violet-soft)}
+
+.note{margin-top:28px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.88rem;max-width:70ch}
+.note strong{color:var(--ink)}
+
+/* =========================================================
+   5. GUIA (página de cada situação)
+   ========================================================= */
+.back{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:.95rem;margin-bottom:10px;padding:6px 0}
+.g-head{display:flex;gap:16px;align-items:center;margin-bottom:14px}
+.g-head .tile-ic{width:60px;height:60px;border-radius:16px}
+.g-head .tile-ic .icon{width:32px;height:32px}
+.g-head h1{font-size:2.3rem;font-weight:800}
+.g-head p{margin:4px 0 0;color:var(--muted)}
+.g-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);
+  border-radius:12px;padding:11px 16px;cursor:pointer;text-decoration:none;font-weight:700;font-size:.98rem}
+.btn:hover{border-color:var(--muted)}
+.btn-red{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.btn-red:hover{filter:brightness(1.06);border-color:var(--red)}
+.btn-ink{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn[aria-pressed="true"] .icon{fill:currentColor}
+
+.alert{border-radius:16px;padding:14px 16px;margin-bottom:14px;border:1.5px solid}
+.alert h2{font-size:1.3rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.alert ul{margin:0;padding-left:20px}
+.alert li{margin:3px 0}
+.alert-red{background:var(--red-soft);border-color:color-mix(in srgb,var(--red) 45%,transparent)}
+.alert-red h2{color:var(--red-text)}
+.alert-amber{background:var(--amber-soft);border-color:color-mix(in srgb,var(--amber) 40%,transparent)}
+.alert-amber h2{color:var(--amber)}
+.alert-green{background:var(--green-soft);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.alert-green h2{color:var(--green)}
+
+.g-cols{display:grid;gap:14px}
+@media (min-width:860px){.g-cols{grid-template-columns:1.55fr 1fr;align-items:start}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.panel h2{font-size:1.45rem;margin-bottom:10px}
+.signs{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.signs li{background:var(--surface-2);border-radius:10px;padding:6px 11px;font-size:.93rem}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:0;padding-top:4px}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--font-display);font-weight:800;font-size:1.5rem;
+  width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--c-soft);color:var(--c)}
+.steps b{display:block;font-size:1.05rem;margin-bottom:2px}
+.steps span{color:var(--muted)}
+.dont li::marker{color:var(--red-text)}
+.tip{font-size:.95rem}
+.source{color:var(--muted);font-size:.82rem;margin-top:14px}
+
+/* ---------- Modo passo a passo ---------- */
+.focus{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column;
+  padding:calc(16px + env(safe-area-inset-top,0px)) 20px calc(16px + env(safe-area-inset-bottom,0px))}
+.focus.open{display:flex}
+.focus-top{display:flex;align-items:center;gap:12px;max-width:720px;width:100%;margin:0 auto}
+.bars{display:flex;gap:6px;flex:1}
+.bars i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.bars i.on{background:var(--red)}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.focus-body{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:720px;width:100%;margin:0 auto}
+.focus-n{font-family:var(--font-display);font-weight:800;font-size:6rem;line-height:.9;color:var(--red-text)}
+.focus-t{font-family:var(--font-display);font-weight:700;font-size:2.4rem;line-height:1.05;margin:8px 0 14px}
+.focus-d{font-size:1.25rem;line-height:1.5;max-width:40ch}
+.focus-nav{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;max-width:720px;width:100%;margin:0 auto}
+.focus-nav .btn{padding:16px;font-size:1.1rem}
+
+/* =========================================================
+   6. TREINADOR DE RCP
+   ========================================================= */
+.cpr{display:grid;gap:16px}
+@media (min-width:860px){.cpr{grid-template-columns:1.1fr 1fr;align-items:start}}
+.cpr-stage{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.seg{display:flex;background:var(--surface-2);border-radius:12px;padding:4px;width:100%;max-width:420px}
+.seg button{flex:1;border:0;background:transparent;border-radius:9px;padding:9px 8px;cursor:pointer;font-size:.92rem;font-weight:700;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.dial{position:relative;width:min(300px,72vw);aspect-ratio:1;display:grid;place-items:center}
+.dial-ring{position:absolute;inset:0;border-radius:50%;border:14px solid var(--red-soft)}
+.dial-core{width:72%;aspect-ratio:1;border-radius:50%;background:var(--red);color:var(--on-red);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;transition:transform .08s ease-out}
+.dial-core.beat{transform:scale(.88)}
+.dial-count{font-family:var(--font-display);font-weight:800;font-size:5.4rem;line-height:.9}
+.dial-label{font-size:.95rem;opacity:.92}
+.dial.vent .dial-core{background:var(--blue)}
+.dial.vent .dial-ring{border-color:var(--blue-soft)}
+.cpr-stats{display:flex;gap:26px;justify-content:center}
+.cpr-stats div{text-align:center}
+.cpr-stats b{display:block;font-family:var(--font-display);font-size:2rem;line-height:1}
+.cpr-stats span{font-size:.82rem;color:var(--muted)}
+.cpr-msg{min-height:1.6em;text-align:center;font-weight:700;color:var(--red-text)}
+.cpr-ctrl{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cpr-ctrl .btn{min-width:150px;padding:14px 18px;font-size:1.05rem}
+.toggle{display:flex;align-items:center;gap:10px;font-size:.95rem;cursor:pointer}
+.toggle input{width:20px;height:20px;accent-color:var(--red)}
+@media (prefers-reduced-motion:reduce){
+  .dial-core{transition:none}.dial-core.beat{transform:none;filter:brightness(1.25)}
+  .sos-ring::before{animation:none}
+}
+
+/* =========================================================
+   7. CONTATOS, FICHA, SALVOS
+   ========================================================= */
+.contacts{display:grid;gap:10px}
+.contact{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-decoration:none}
+.contact:hover{border-color:var(--muted)}
+.contact-num{font-family:var(--font-display);font-weight:800;font-size:2.1rem;min-width:92px;color:var(--c)}
+.contact-num.long{font-size:1.35rem}
+.contact b{display:block;font-size:1.05rem}
+.contact span{color:var(--muted);font-size:.9rem}
+.contact .icon{margin-left:auto;color:var(--muted)}
+
+.form{display:grid;gap:14px;max-width:640px}
+.field label{display:block;font-weight:700;margin-bottom:5px}
+.field small{display:block;color:var(--muted);font-size:.85rem;margin-top:4px}
+.field input,.field textarea,.field select{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 13px;font-size:1rem}
+.field textarea{min-height:76px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--focus);outline:none}
+.row2{display:grid;gap:14px}
+@media (min-width:600px){.row2{grid-template-columns:1fr 1fr}}
+.saved-ok{color:var(--green);font-weight:700;min-height:1.5em}
+
+/* =========================================================
+   8. NAVEGAÇÃO INFERIOR
+   ========================================================= */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar-inner{max-width:620px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 10px;text-decoration:none;color:var(--muted);font-size:.76rem}
+.tab[aria-current="page"]{color:var(--red-text);font-weight:700}
+.tab[aria-current="page"] .icon{stroke-width:2.4}
+.tab-rcp .tab-dot{width:44px;height:30px;border-radius:999px;background:var(--red);color:var(--on-red);display:grid;place-items:center;margin-top:-2px}
+.tab-rcp .tab-dot .icon{width:20px;height:20px}
+.tab-rcp[aria-current="page"] .tab-dot{box-shadow:0 0 0 3px var(--red-soft)}
+
+.disclaimer{background:var(--surface-2);border-radius:12px;padding:10px 14px;font-size:.86rem;color:var(--muted);margin-bottom:18px;display:flex;gap:10px;align-items:flex-start}
+.disclaimer .icon{width:20px;height:20px;color:var(--amber);margin-top:2px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#inicio" aria-label="Pronto-Socorro de Bolso, início">
+      <span class="brand-mark"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6Z" fill="currentColor" stroke="none"/></svg></span>
+      <span class="brand-name">Pronto-Socorro de Bolso<small>Primeiros socorros passo a passo</small></span>
+    </a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Mudar tema"></button>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<nav class="tabbar" aria-label="Navegação principal">
+  <div class="tabbar-inner" id="tabbar"></div>
+</nav>
+
+<div class="focus" id="focus" role="dialog" aria-modal="true" aria-labelledby="focusTitle">
+  <div class="focus-top">
+    <div class="bars" id="focusBars"></div>
+    <button class="icon-btn" id="focusClose" type="button" aria-label="Fechar modo passo a passo"></button>
+  </div>
+  <div class="focus-body" aria-live="polite">
+    <div class="focus-n" id="focusN"></div>
+    <h2 class="focus-t" id="focusTitle"></h2>
+    <p class="focus-d" id="focusD"></p>
+  </div>
+  <div class="focus-nav">
+    <button class="btn" id="focusPrev" type="button">Voltar</button>
+    <button class="btn btn-red" id="focusNext" type="button">Próximo passo</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   A. ÍCONES (SVG em linha, sem dependências externas)
+   ========================================================= */
+const IC = {
+  heart:'<path d="M20.8 8.6a5 5 0 0 0-8.8-3.2A5 5 0 0 0 3.2 8.6c0 5 8.8 11 8.8 11s8.8-6 8.8-11Z"/><path d="M3.6 12h4l1.5-3 3 6 1.5-3h6.8"/>',
+  wind:'<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/>',
+  baby:'<circle cx="12" cy="13" r="8"/><path d="M9.5 12h.01M14.5 12h.01"/><path d="M9.8 16a3 3 0 0 0 4.4 0"/><path d="M12 5c1.6-.6 2-2 1-3"/>',
+  spiral:'<path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7a5 5 0 1 0 5 5"/><path d="M12 11a1 1 0 1 0 1 1"/>',
+  flame:'<path d="M12 22c4 0 7-2.8 7-7 0-3.5-2.5-6-4-8-.5 2-1.5 3-3 3 0-3-1-5.5-3-8-1 4-5 6.5-5 12 0 4.2 3 8 8 8Z"/>',
+  drop:'<path d="M12 2.7 6.3 9.6a7 7 0 1 0 11.4 0Z"/><path d="M9 14a3 3 0 0 0 3 3"/>',
+  wave:'<path d="M2 12h3l2-6 4 12 3-9 2 3h6"/>',
+  face:'<circle cx="12" cy="12" r="9"/><path d="M8.5 10h.01M15.5 10h.01"/><path d="M8 15.5c2 1 4.5.6 7.5-2"/>',
+  chest:'<path d="M12 21s-8-5-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 6-8 11-8 11Z"/><path d="M12 9v4M10 11h4"/>',
+  flask:'<path d="M9 3h6M10 3v6L4.6 19a1.4 1.4 0 0 0 1.2 2h12.4a1.4 1.4 0 0 0 1.2-2L14 9V3"/><path d="M7 15h10"/>',
+  zap:'<path d="M13 2 4 14h7l-1 8 9-12h-7Z"/>',
+  bone:'<path d="M17 3a2.5 2.5 0 0 1 3.5 3.5 2.5 2.5 0 0 1-1.8 4.2l-8 8a2.5 2.5 0 0 1-4.2 1.8A2.5 2.5 0 0 1 3 17a2.5 2.5 0 0 1 1.8-4.2l8-8A2.5 2.5 0 0 1 17 3Z"/>',
+  water:'<path d="M2 7c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M2 13c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>',
+  nose:'<path d="M13 3c-1 4-4.5 8-4.5 11.5A3.5 3.5 0 0 0 12 18h1.5a3 3 0 0 0 3-3"/><path d="M11 21.5a1.5 1.5 0 0 0 3 0c0-1-1.5-2.5-1.5-2.5S11 20.5 11 21.5Z"/>',
+  bug:'<rect x="8" y="7" width="8" height="12" rx="4"/><path d="M12 7V4M8 11H4M8 15H4M16 11h4M16 15h4M9.5 3.5 12 5l2.5-1.5"/>',
+  side:'<circle cx="6" cy="8" r="2"/><path d="M3 18h18M8 12l4 2 4-3 3 3M9 18l3-4"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  star:'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9Z"/>',
+  back:'<path d="M15 18 9 12l6-6"/>',
+  chev:'<path d="m9 18 6-6-6-6"/>',
+  close:'<path d="M18 6 6 18M6 6l12 12"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>',
+  auto:'<circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" stroke="none"/>',
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/>',
+  card:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M5.5 16a3 3 0 0 1 6 0M14 10h4M14 14h3"/>',
+  alert:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  steps:'<path d="M4 6h16M4 12h10M4 18h6"/>',
+  play:'<path d="M7 4v16l13-8Z"/>',
+  pause:'<path d="M7 4h4v16H7zM13 4h4v16h-4z"/>'
+};
+const icon = (n, label) => `<svg class="icon" viewBox="0 0 24 24" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"'}>${IC[n]}</svg>`;
+
+/* =========================================================
+   B. BASE DE DADOS DE PROTOCOLOS
+   Cada guia é um registro: no app final, este array vira um arquivo
+   JSON (ou tabela SQLite/IndexedDB) empacotado com o app para uso offline.
+   O campo "prioridade" define a ordem na tela inicial e deve ser
+   recalibrado com dados do DATASUS/SIH (acidentes mais frequentes).
+   ========================================================= */
+const CATEGORIAS = {
+  coracao:   {nome:"Coração e consciência"},
+  respiracao:{nome:"Respiração"},
+  ferimentos:{nome:"Ferimentos e queimaduras"},
+  acidentes: {nome:"Intoxicações e acidentes"}
+};
+
+const GUIAS = [
+{
+  id:"parada-cardiaca", titulo:"Parada cardíaca (RCP)", cat:"coracao", icone:"heart", prioridade:1, urgente:true,
+  resumo:"A pessoa não responde e não respira normalmente.",
+  palavras:"rcp reanimacao massagem cardiaca coracao parou nao respira inconsciente",
+  sinais:["Não responde quando você chama e toca nos ombros","Não respira ou só dá “puxadas” de ar irregulares","Pele pálida ou arroxeada"],
+  passos:[
+    ["Veja se o local é seguro","Antes de se aproximar, confira trânsito, fios elétricos, fogo ou água. Você não ajuda ninguém se também se ferir."],
+    ["Chame e toque nos ombros","Fale alto: “Você está me ouvindo?”. Se não responder e não respirar normalmente, trate como parada cardíaca."],
+    ["Ligue 192 no viva-voz","Ou peça para alguém ligar e buscar um desfibrilador (DEA), comum em shoppings, academias e estações. O atendente do SAMU vai orientar você."],
+    ["Posicione as mãos","Pessoa deitada de costas em superfície firme. Mãos uma sobre a outra no centro do peito, braços esticados, ombros acima das mãos."],
+    ["Comprima forte e rápido","Afunde o peito de 5 a 6 cm, no ritmo de 100 a 120 por minuto, e deixe o peito voltar totalmente a cada compressão. Use o guia de compressões do app para marcar o ritmo."],
+    ["Não pare","Continue até o SAMU chegar, o DEA pedir para afastar ou a pessoa reagir. Se houver ajuda, revezem a cada 2 minutos."]
+  ],
+  nao:["Não perca tempo procurando pulso","Não tenha medo de apertar: o risco de não agir é muito maior que o de machucar","Não interrompa as compressões por mais de 10 segundos"],
+  ligar:["Sempre: parada cardíaca exige o SAMU imediatamente"],
+  dica:"Em crianças, use uma ou as duas mãos e afunde cerca de 5 cm. Em bebês, use dois dedos no centro do peito e afunde cerca de 4 cm. Se você não tem treinamento, faça só as compressões: elas já salvam vidas.",
+  rcp:true
+},
+{
+  id:"engasgo-adulto", titulo:"Engasgo em adulto ou criança", cat:"respiracao", icone:"wind", prioridade:2, urgente:true,
+  resumo:"Não consegue falar, tossir ou respirar.",
+  palavras:"engasgo heimlich sufocado comida garganta asfixia nao consegue respirar",
+  sinais:["Leva as mãos ao pescoço","Não consegue falar nem tossir","Respiração com chiado ou ausente","Lábios e rosto arroxeados"],
+  passos:[
+    ["Pergunte: “Você está engasgado?”","Se a pessoa tosse com força, incentive a tosse e fique por perto. Se não consegue falar nem tossir, aja já."],
+    ["Peça para alguém ligar 192","Não deixe a pessoa sozinha para fazer a ligação."],
+    ["Posicione-se atrás dela","Abrace pela cintura e coloque uma perna entre as dela para ter apoio caso desmaie."],
+    ["Feche uma das mãos","Coloque o punho fechado logo acima do umbigo e abaixo das costelas. Segure o punho com a outra mão."],
+    ["Puxe para dentro e para cima","Faça compressões rápidas e fortes, como se quisesse levantar a pessoa, até o objeto sair ou ela desmaiar."],
+    ["Se desmaiar, inicie a RCP","Deite a pessoa no chão, confirme que o 192 foi chamado e comece as compressões no peito. Só retire o objeto da boca se ele estiver visível."]
+  ],
+  nao:["Não dê água nem comida","Não tente tirar o objeto com o dedo sem enxergá-lo","Não faça a manobra em quem está tossindo com força"],
+  ligar:["Sempre que precisar fazer a manobra, mesmo que o objeto saia: a pessoa precisa ser avaliada","Se a pessoa desmaiar"],
+  dica:"Em gestantes e pessoas com obesidade, posicione as mãos no centro do peito em vez da barriga. Se estiver sozinho e engasgado, empurre o abdômen contra o encosto firme de uma cadeira."
+},
+{
+  id:"engasgo-bebe", titulo:"Engasgo em bebê", cat:"respiracao", icone:"baby", prioridade:3, urgente:true,
+  resumo:"Bebê com menos de 1 ano que não chora nem respira.",
+  palavras:"bebe engasgado leite recem nascido lactente sufocado",
+  sinais:["Não chora nem tosse","Esforço para respirar sem conseguir","Fica roxo ou muito pálido"],
+  passos:[
+    ["Peça para alguém ligar 192","Se estiver sozinho, faça um ciclo da manobra antes de ligar no viva-voz."],
+    ["Deite o bebê de bruços","Apoie-o sobre seu antebraço, com a cabeça mais baixa que o corpo, segurando a mandíbula com a mão."],
+    ["Dê 5 tapas nas costas","Golpes firmes com a base da mão, entre as escápulas."],
+    ["Vire de barriga para cima","Apoie a cabeça e as costas no outro antebraço, mantendo a cabeça mais baixa."],
+    ["Faça 5 compressões no peito","Com dois dedos no centro do peito, logo abaixo da linha dos mamilos."],
+    ["Repita até desengasgar","Alterne 5 tapas e 5 compressões. Se o bebê perder a consciência, inicie a RCP de bebê."]
+  ],
+  nao:["Não faça compressão na barriga de bebês","Não sacuda o bebê","Não coloque o dedo na boca às cegas","Não segure o bebê de cabeça para baixo pelos pés"],
+  ligar:["Sempre: mesmo que desengasgue, leve o bebê para avaliação"],
+  dica:"Um bebê que chora ou tosse está com a via aérea parcialmente aberta: observe e deixe que ele tussa."
+},
+{
+  id:"desmaio", titulo:"Desmaio", cat:"coracao", icone:"spiral", prioridade:4,
+  resumo:"Perdeu a consciência por alguns instantes.",
+  palavras:"desmaio desmaiou tontura queda de pressao sincope apagou",
+  sinais:["Tontura, visão escurecida e suor frio antes de cair","Pele pálida","Perda breve da consciência"],
+  passos:[
+    ["Ampare e deite a pessoa","Evite que ela caia e bata a cabeça. Deite-a de costas no chão."],
+    ["Confira a respiração","Se não respira normalmente, ligue 192 e comece a RCP."],
+    ["Eleve as pernas","Se respira e não houve queda forte, levante as pernas cerca de 30 cm para ajudar o sangue a chegar ao cérebro."],
+    ["Deixe o ar circular","Afrouxe roupas apertadas e afaste curiosos."],
+    ["Levante devagar","Quando acordar, mantenha deitada por alguns minutos e depois sente antes de ficar de pé."],
+    ["Se não acordar em 1 minuto","Coloque na posição lateral de segurança e ligue 192."]
+  ],
+  nao:["Não jogue água no rosto","Não dê nada para beber ou comer até estar totalmente acordada","Não dê álcool ou vinagre para cheirar","Não levante a pessoa rapidamente"],
+  ligar:["Não acorda em 1 minuto","Dor no peito, falta de ar ou convulsão","Gestante, pessoa com diabetes ou que bateu a cabeça","Desmaios repetidos"],
+  dica:"Se sentir que vai desmaiar, deite ou sente com a cabeça entre os joelhos antes de cair."
+},
+{
+  id:"queimaduras", titulo:"Queimaduras", cat:"ferimentos", icone:"flame", prioridade:5,
+  resumo:"Fogo, líquido quente, vapor, sol ou produto químico.",
+  palavras:"queimadura queimou panela agua quente oleo fogo bolha vapor",
+  sinais:["Vermelhidão e dor","Bolhas","Pele esbranquiçada ou escura (mais grave)"],
+  passos:[
+    ["Interrompa a queimadura","Afaste a pessoa da fonte de calor. Se a roupa pegar fogo: pare, deite e role."],
+    ["Resfrie com água corrente","Água fria da torneira, não gelada, por 20 minutos. Vale mesmo se já passou algum tempo."],
+    ["Retire anéis e acessórios","Tire relógios, anéis e roupas soltas antes que a região inche."],
+    ["Cubra sem apertar","Use filme plástico de cozinha colocado por cima, sem enrolar, ou um pano limpo."],
+    ["Mantenha a pessoa aquecida","Cubra o resto do corpo, principalmente em crianças, para evitar frio excessivo."],
+    ["Procure atendimento","Queimaduras com bolhas ou maiores que a palma da mão devem ser avaliadas."]
+  ],
+  nao:["Não use gelo","Não passe manteiga, pasta de dente, pó de café, óleo ou clara de ovo","Não estoure as bolhas","Não arranque roupa grudada na pele"],
+  ligar:["Queimadura maior que a palma da mão da vítima","Rosto, mãos, pés, genitais ou articulações","Queimadura elétrica ou química","Criança, idoso ou dificuldade para respirar após fumaça"],
+  dica:"Produto químico: lave com bastante água corrente e retire a roupa contaminada. Se for pó seco, retire o excesso antes de lavar."
+},
+{
+  id:"cortes", titulo:"Cortes e sangramentos", cat:"ferimentos", icone:"drop", prioridade:6,
+  resumo:"Ferimentos com sangramento leve ou intenso.",
+  palavras:"corte sangue sangramento hemorragia faca vidro ferida machucado",
+  sinais:["Sangramento contínuo","Sangue em jato (grave)","Pele fria, pálida e confusão (sinais de choque)"],
+  passos:[
+    ["Proteja suas mãos","Use luvas ou um saco plástico limpo, se tiver."],
+    ["Pressione o ferimento","Aperte firme com um pano limpo, gaze ou toalha diretamente sobre o corte."],
+    ["Não retire o primeiro pano","Se encharcar, coloque outro por cima e continue pressionando."],
+    ["Mantenha a pressão","Segure por pelo menos 10 minutos sem ficar levantando para olhar."],
+    ["Limpe cortes pequenos","Depois que parar, lave com água e sabão e cubra com curativo."],
+    ["Sangramento que não para","Continue pressionando e ligue 192. Torniquete apenas se você souber usar."]
+  ],
+  nao:["Não retire objetos cravados: apoie panos ao redor para que não se mexam","Não coloque pó de café, açúcar, terra ou pasta","Não use álcool dentro do ferimento"],
+  ligar:["Sangue em jato ou que não para com pressão","Corte profundo ou com bordas abertas","Objeto cravado","Pessoa fria, pálida ou confusa"],
+  dica:"Ferimentos sujos ou causados por metal enferrujado pedem conferência da vacina antitetânica na UBS."
+},
+{
+  id:"convulsao", titulo:"Convulsão", cat:"coracao", icone:"wave", prioridade:7,
+  resumo:"Movimentos involuntários e perda de consciência.",
+  palavras:"convulsao crise epilepsia ataque tremendo debatendo",
+  sinais:["Movimentos bruscos e involuntários","Olhar fixo ou perda de consciência","Salivação, às vezes perda de urina"],
+  passos:[
+    ["Marque o tempo","Olhe o relógio quando a crise começar. A duração é importante para o atendimento."],
+    ["Afaste objetos perigosos","Tire móveis, objetos cortantes e quentes de perto."],
+    ["Proteja a cabeça","Coloque algo macio por baixo, como uma blusa dobrada."],
+    ["Afrouxe roupas no pescoço","Gravata, colarinho ou cachecol."],
+    ["Coloque de lado depois","Quando os movimentos pararem, use a posição lateral de segurança."],
+    ["Fique ao lado","Converse com calma até a pessoa recuperar a consciência. É normal ficar confusa."]
+  ],
+  nao:["Não segure os movimentos","Não coloque nada na boca e não puxe a língua: ninguém engole a língua","Não dê água nem remédio","Não jogue água"],
+  ligar:["Dura mais de 5 minutos","Primeira convulsão ou crises seguidas","Gestante, pessoa ferida ou crise na água","Não acorda ou tem dificuldade para respirar"]
+},
+{
+  id:"avc", titulo:"Suspeita de AVC", cat:"coracao", icone:"face", prioridade:8, urgente:true,
+  resumo:"Boca torta, fraqueza de um lado, fala enrolada.",
+  palavras:"avc derrame boca torta fala enrolada fraqueza formigamento",
+  sinais:["Boca torta ao sorrir","Fraqueza ou formigamento de um lado do corpo","Fala enrolada ou confusa","Dor de cabeça súbita e muito forte","Perda súbita de visão ou equilíbrio"],
+  passos:[
+    ["S de Sorria","Peça um sorriso. Um lado da boca não acompanha?"],
+    ["A de Abrace","Peça para levantar os dois braços. Um deles cai ou não sobe?"],
+    ["M de Música","Peça para repetir uma frase ou cantar. A fala sai enrolada?"],
+    ["U de Urgente: ligue 192","Qualquer sinal já basta. Anote o horário em que os sintomas começaram."],
+    ["Deixe em repouso","Cabeça levemente elevada. Se vomitar, vire de lado."],
+    ["Nada pela boca","Nem água, nem comida, nem remédio."]
+  ],
+  nao:["Não espere os sintomas passarem","Não dê remédio para pressão, aspirina ou outros medicamentos","Não ofereça água ou comida"],
+  ligar:["Sempre: no AVC, cada minuto conta para o tratamento"],
+  dica:"O tratamento que desfaz o coágulo só funciona nas primeiras horas. Por isso o horário de início dos sintomas é a informação mais valiosa."
+},
+{
+  id:"infarto", titulo:"Dor no peito", cat:"coracao", icone:"chest", prioridade:9, urgente:true,
+  resumo:"Aperto no peito, falta de ar, suor frio.",
+  palavras:"infarto dor no peito coracao aperto braco esquerdo ataque cardiaco",
+  sinais:["Dor, aperto ou queimação no peito","Dor que vai para braço, mandíbula, costas ou estômago","Suor frio, náusea, falta de ar"],
+  passos:[
+    ["Ligue 192 imediatamente","Não espere a dor passar."],
+    ["Deixe em repouso","Sentada ou semissentada, na posição mais confortável."],
+    ["Afrouxe as roupas","E mantenha o ambiente arejado e calmo."],
+    ["Siga o médico do SAMU","Só dê medicamentos se o médico regulador orientar."],
+    ["Fique atento","Se desmaiar e não respirar normalmente, inicie a RCP."],
+    ["Separe informações","Documentos, remédios em uso e a ficha de emergência deste app."]
+  ],
+  nao:["Não deixe a pessoa caminhar ou fazer esforço","Não dê remédios por conta própria","Não leve dirigindo se o SAMU puder ir até vocês"],
+  ligar:["Sempre: dor no peito é emergência até prova em contrário"],
+  dica:"Mulheres, idosos e pessoas com diabetes podem ter sintomas diferentes: cansaço extremo, enjoo ou dor nas costas sem dor no peito."
+},
+{
+  id:"intoxicacao", titulo:"Intoxicação e envenenamento", cat:"acidentes", icone:"flask", prioridade:10,
+  resumo:"Remédios, produtos de limpeza, plantas ou gás.",
+  palavras:"intoxicacao envenenamento veneno remedio produto limpeza agua sanitaria engoliu gas planta",
+  sinais:["Embalagem aberta perto da pessoa","Vômitos, sonolência ou agitação","Queimaduras na boca","Cheiro forte no hálito ou no ambiente"],
+  passos:[
+    ["Afaste da substância","Se for gás ou fumaça, abra janelas e saia do ambiente. Não acione interruptores se houver cheiro de gás."],
+    ["Ligue para pedir orientação","Disque-Intoxicação 0800 722 6001 ou SAMU 192."],
+    ["Guarde a embalagem","Nome do produto, quantidade e horário ajudam a definir o tratamento."],
+    ["Pele ou olhos atingidos","Lave com bastante água corrente por 15 minutos."],
+    ["Se estiver sonolenta","Mas respirando, coloque na posição lateral de segurança."],
+    ["Se não respirar normalmente","Inicie a RCP e mantenha o SAMU na linha."]
+  ],
+  nao:["Não provoque vômito","Não dê leite, óleo, água com sal ou outros “antídotos” caseiros","Não espere os sintomas aparecerem"],
+  ligar:["Sempre que houver ingestão suspeita, principalmente em crianças"],
+  dica:"Prevenção: produtos de limpeza e remédios no alto, trancados e nas embalagens originais."
+},
+{
+  id:"choque-eletrico", titulo:"Choque elétrico", cat:"acidentes", icone:"zap", prioridade:11,
+  resumo:"Contato com fio, tomada ou aparelho energizado.",
+  palavras:"choque eletrico tomada fio eletricidade energia raio",
+  sinais:["Pessoa presa ao fio ou aparelho","Queimaduras nos pontos de entrada e saída","Desmaio ou parada cardíaca"],
+  passos:[
+    ["Não toque na pessoa","Ela pode estar energizada. Desligue o disjuntor ou a chave geral primeiro."],
+    ["Se não der para desligar","Afaste a pessoa com objeto seco de madeira ou plástico, pisando em superfície seca."],
+    ["Ligue 192","Fios de alta tensão na rua: mantenha distância e ligue 193."],
+    ["Confira a respiração","Se não respirar normalmente, inicie a RCP."],
+    ["Resfrie as queimaduras","Com a energia desligada, use água corrente como em qualquer queimadura."],
+    ["Leve para avaliação","Mesmo que pareça bem: o choque pode alterar o ritmo do coração horas depois."]
+  ],
+  nao:["Não use objetos molhados ou metálicos para afastar","Não se aproxime de fios caídos na rua"],
+  ligar:["Sempre após choque com perda de consciência, queimadura ou alta tensão"]
+},
+{
+  id:"quedas-fraturas", titulo:"Quedas e fraturas", cat:"ferimentos", icone:"bone", prioridade:12,
+  resumo:"Dor forte, inchaço ou deformidade após queda.",
+  palavras:"queda fratura osso quebrado torceu entorse caiu idoso coluna",
+  sinais:["Dor intensa ao mexer","Inchaço ou roxo","Membro torto ou encurtado","Osso aparecendo (fratura exposta)"],
+  passos:[
+    ["Mantenha a pessoa parada","Peça que não tente levantar ou mexer a região."],
+    ["Suspeita na coluna?","Queda de altura, dor no pescoço ou costas, formigamento: não mova e ligue 192."],
+    ["Imobilize como está","Use papelão, revista ou tábua como tala, prendendo as articulações acima e abaixo."],
+    ["Fratura exposta","Cubra com pano limpo, sem empurrar o osso para dentro, e controle o sangramento ao redor."],
+    ["Aplique frio","Gelo envolto em pano por até 20 minutos ajuda na dor e no inchaço."],
+    ["Procure atendimento","Uma fratura precisa de raio-X e tratamento."]
+  ],
+  nao:["Não tente colocar o osso no lugar","Não massageie","Não dê comida nem bebida: pode ser necessária cirurgia"],
+  ligar:["Suspeita de lesão na coluna ou na cabeça","Fratura exposta ou na coxa","Idoso que não consegue levantar"]
+},
+{
+  id:"afogamento", titulo:"Afogamento", cat:"acidentes", icone:"water", prioridade:13, urgente:true,
+  resumo:"Piscina, mar, rio, balde ou banheira.",
+  palavras:"afogamento afogado piscina mar rio agua balde banheira",
+  sinais:["Dificuldade para manter a cabeça fora da água","Silêncio: quem se afoga raramente grita","Tosse, falta de ar ou inconsciência após resgate"],
+  passos:[
+    ["Ligue 193 ou 192","Bombeiros fazem o resgate na água; o SAMU cuida do atendimento."],
+    ["Jogue algo que flutue","Boia, garrafa PET vazia, prancha ou corda. Não entre na água sem preparo."],
+    ["Deite fora da água","De costas, em local seco e firme."],
+    ["Se não respira normalmente","Inicie a RCP. Se você tiver treinamento, faça também as ventilações: no afogamento elas são essenciais."],
+    ["Se respira","Coloque na posição lateral de segurança e aqueça com roupas secas."],
+    ["Leve para avaliação","Mesmo recuperada, a pessoa pode piorar horas depois."]
+  ],
+  nao:["Não pule na água sem saber resgatar","Não aperte a barriga para “tirar a água”"],
+  ligar:["Sempre após afogamento, mesmo leve"],
+  dica:"Crianças pequenas podem se afogar em poucos centímetros de água. Baldes e banheiras sempre vazios e supervisão constante."
+},
+{
+  id:"sangramento-nasal", titulo:"Sangramento no nariz", cat:"ferimentos", icone:"nose", prioridade:14,
+  resumo:"Sangue saindo pelo nariz.",
+  palavras:"nariz sangrando sangramento nasal epistaxe",
+  sinais:["Sangue escorrendo de uma ou das duas narinas"],
+  passos:[
+    ["Sente e incline para frente","Assim o sangue não escorre para a garganta."],
+    ["Aperte a parte mole do nariz","Com o polegar e o indicador, por 10 minutos seguidos, respirando pela boca."],
+    ["Cuspa o sangue","Engolir sangue provoca enjoo."],
+    ["Use frio","Compressa fria sobre o nariz ajuda a fechar os vasos."],
+    ["Depois, evite esforço","Não assoe o nariz nem faça força por algumas horas."]
+  ],
+  nao:["Não incline a cabeça para trás","Não deite","Não enfie algodão ou papel fundo na narina"],
+  ligar:["Não para depois de 20 minutos","Após pancada forte na cabeça ou no rosto","Pessoa que usa anticoagulante ou sangramento muito intenso"]
+},
+{
+  id:"picadas", titulo:"Picadas de animais peçonhentos", cat:"acidentes", icone:"bug", prioridade:15,
+  resumo:"Cobra, escorpião, aranha.",
+  palavras:"picada cobra escorpiao aranha mordida peconhento veneno abelha",
+  sinais:["Dor intensa no local","Inchaço e vermelhidão","Suor, vômitos, tontura (mais grave em crianças)"],
+  passos:[
+    ["Afaste-se do animal","Se for seguro, tire uma foto de longe para ajudar a identificar."],
+    ["Lave o local","Com água e sabão."],
+    ["Mantenha em repouso","Pessoa deitada e calma, sem movimentar o membro atingido."],
+    ["Retire anéis e calçados","Antes que o local inche."],
+    ["Busque atendimento urgente","Ligue 192 ou 0800 722 6001. Alguns casos precisam de soro, disponível em hospitais de referência."]
+  ],
+  nao:["Não faça torniquete","Não corte, fure ou chupe o local","Não passe fumo, alho, querosene ou outras substâncias","Não dê bebida alcoólica"],
+  ligar:["Sempre em picadas de cobra e de escorpião em crianças","Falta de ar ou inchaço no rosto após picada de abelha"]
+},
+{
+  id:"posicao-lateral", titulo:"Posição lateral de segurança", cat:"coracao", icone:"side", prioridade:16,
+  resumo:"Para quem está desacordado, mas respira.",
+  palavras:"posicao lateral seguranca recuperacao desacordado inconsciente respira vomito",
+  sinais:["Pessoa inconsciente que respira normalmente"],
+  passos:[
+    ["Ajoelhe ao lado","Estique o braço mais próximo de você para cima, formando um ângulo reto com o corpo."],
+    ["Cruze o outro braço","Coloque-o sobre o peito, com o dorso da mão encostado na bochecha."],
+    ["Dobre o joelho mais distante","Deixe o pé apoiado no chão."],
+    ["Role a pessoa","Puxe pelo joelho dobrado, girando-a de lado para você."],
+    ["Abra a via aérea","Incline levemente a cabeça para trás para facilitar a respiração e a saída de vômito."],
+    ["Observe a respiração","Fique ao lado até o socorro chegar. Se parar de respirar, inicie a RCP."]
+  ],
+  nao:["Evite mover se houver suspeita de lesão na coluna, a não ser que ela vomite"],
+  ligar:["Sempre que alguém estiver inconsciente"]
+}
+];
+
+const CONTATOS = [
+  {num:"192", nome:"SAMU", desc:"Emergências médicas e orientação por telefone", cor:"var(--red-text)"},
+  {num:"193", nome:"Corpo de Bombeiros", desc:"Incêndio, resgate, afogamento, pessoa presa", cor:"var(--amber)"},
+  {num:"190", nome:"Polícia Militar", desc:"Violência, crimes e situações de risco", cor:"var(--blue)"},
+  {num:"199", nome:"Defesa Civil", desc:"Enchentes, deslizamentos e desabamentos", cor:"var(--violet)"},
+  {num:"0800 722 6001", tel:"08007226001", nome:"Disque-Intoxicação", desc:"Orientação em intoxicações e picadas (Anvisa)", cor:"var(--green)"}
+];
+
+/* =========================================================
+   C. ARMAZENAMENTO LOCAL (favoritos, tema, ficha)
+   ========================================================= */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+let favoritos = new Set(store.get("psb:favoritos", []));
+const salvarFavoritos = () => store.set("psb:favoritos", [...favoritos]);
+
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const porId = id => GUIAS.find(g => g.id === id);
+
+/* =========================================================
+   D. TEMA CLARO / ESCURO / AUTOMÁTICO
+   ========================================================= */
+const TEMAS = {auto:{rot:"Automático",ic:"auto"}, light:{rot:"Claro",ic:"sun"}, dark:{rot:"Escuro",ic:"moon"}};
+let tema = store.get("psb:tema", "auto");
+function aplicarTema(){
+  const root = document.documentElement;
+  if (tema === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", tema);
+  const b = document.getElementById("themeBtn");
+  b.innerHTML = icon(TEMAS[tema].ic) + `<span>${TEMAS[tema].rot}</span>`;
+  b.setAttribute("aria-label", `Tema: ${TEMAS[tema].rot}. Toque para mudar`);
+  const escuro = tema === "dark" || (tema === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+  document.querySelector('meta[name="theme-color"]').content = escuro ? "#0C131F" : "#F3F5F8";
+}
+document.getElementById("themeBtn").addEventListener("click", () => {
+  tema = tema === "auto" ? "light" : tema === "light" ? "dark" : "auto";
+  store.set("psb:tema", tema); aplicarTema();
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", aplicarTema);
+
+/* =========================================================
+   E. NAVEGAÇÃO (rotas pelo #hash)
+   ========================================================= */
+const ABAS = [
+  {id:"inicio", rot:"Início", ic:"home"},
+  {id:"contatos", rot:"Contatos", ic:"phone"},
+  {id:"rcp", rot:"RCP", ic:"heart", destaque:true},
+  {id:"ficha", rot:"Minha ficha", ic:"card"},
+  {id:"salvos", rot:"Salvos", ic:"star"}
+];
+function desenharAbas(atual){
+  const ativo = porId(atual) ? "inicio" : atual;
+  document.getElementById("tabbar").innerHTML = ABAS.map(a => `
+    <a class="tab ${a.destaque ? "tab-rcp" : ""}" href="#${a.id}" ${a.id === ativo ? 'aria-current="page"' : ""}>
+      ${a.destaque ? `<span class="tab-dot">${icon(a.ic)}</span>` : icon(a.ic)}
+      <span>${a.rot}</span>
+    </a>`).join("");
+}
+
+let filtroCat = "todas", termoBusca = "";
+function rota(){
+  const h = (location.hash || "#inicio").slice(1);
+  pararRCP();
+  const app = document.getElementById("app");
+  if (porId(h)) telaGuia(app, porId(h));
+  else if (h === "rcp") telaRCP(app);
+  else if (h === "contatos") telaContatos(app);
+  else if (h === "ficha") telaFicha(app);
+  else if (h === "salvos") telaSalvos(app);
+  else telaInicio(app);
+  desenharAbas(porId(h) ? "inicio" : (["rcp","contatos","ficha","salvos"].includes(h) ? h : "inicio"));
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange", rota);
+
+/* =========================================================
+   F. TELAS
+   ========================================================= */
+const tileHTML = g => `
+  <a class="tile cat-${g.cat}" href="#${g.id}">
+    ${g.urgente ? '<span class="flag" title="Ligue 192 imediatamente"></span>' : ""}
+    <span class="tile-ic">${icon(g.icone)}</span>
+    <span><h3>${g.titulo}</h3><p>${g.resumo}</p></span>
+  </a>`;
+
+function telaInicio(app){
+  app.innerHTML = `
+    <section class="sos" aria-label="Acesso rápido">
+      <a class="sos-call" href="tel:192">
+        <span class="sos-ring">${icon("phone")}</span>
+        <span class="sos-text">
+          <span class="sos-num">192</span>
+          <strong>Ligar para o SAMU</strong>
+          <span>Atendimento gratuito, 24 horas</span>
+        </span>
+      </a>
+      <div class="sos-side">
+        <a class="sos-alt" href="#rcp">${icon("heart")}<span><b>Guia de compressões</b><br><span>Ritmo certo para a RCP</span></span></a>
+        <a class="sos-alt" href="#ficha">${icon("card")}<span><b>Minha ficha</b><br><span>Alergias, remédios e contato</span></span></a>
+      </div>
+    </section>
+
+    <div class="search">
+      ${icon("search")}
+      <label class="sr-only" for="busca">Buscar situação</label>
+      <input id="busca" type="search" placeholder="O que aconteceu? Ex.: queimou, engasgou, desmaiou" autocomplete="off" value="${esc(termoBusca)}">
+    </div>
+
+    <div class="chips" role="group" aria-label="Filtrar por tipo">
+      <button class="chip" data-cat="todas" aria-pressed="${filtroCat==="todas"}">Todas</button>
+      ${Object.entries(CATEGORIAS).map(([k,c]) => `<button class="chip" data-cat="${k}" aria-pressed="${filtroCat===k}">${c.nome}</button>`).join("")}
+    </div>
+
+    <div class="grid" id="lista" aria-live="polite"></div>
+
+    <div class="note">
+      <p><strong>Este app orienta, não substitui o atendimento profissional.</strong> Em qualquer dúvida, ligue 192. O ponto vermelho indica situações em que o SAMU deve ser chamado imediatamente.</p>
+      <p>Conteúdo organizado a partir de protocolos do Ministério da Saúde e do SAMU, manuais da Cruz Vermelha Brasileira e diretrizes de ressuscitação adotadas no Brasil. Antes da publicação, cada guia deve ser revisado por profissional de saúde.</p>
+      <p>Projeto FMU Tech, ODS 3: Saúde e Bem-Estar. Equipe: Fábio Tatsumi Daidoji, Felipe Haruki Daidoji, Fernando Mazuchi Borges e Gabriel Tomaz Silva.</p>
+    </div>`;
+
+  const lista = app.querySelector("#lista");
+  const desenhar = () => {
+    const t = norm(termoBusca.trim());
+    const res = GUIAS
+      .filter(g => filtroCat === "todas" || g.cat === filtroCat)
+      .filter(g => !t || t.split(/\s+/).every(p => norm(g.titulo+" "+g.resumo+" "+g.palavras+" "+g.sinais.join(" ")).includes(p)))
+      .sort((a,b) => a.prioridade - b.prioridade);
+    lista.innerHTML = res.length ? res.map(tileHTML).join("")
+      : `<div class="empty">Nenhum guia encontrado para “${esc(termoBusca)}”. Tente outra palavra ou <a href="tel:192">ligue 192</a> para orientação.</div>`;
+  };
+  desenhar();
+  app.querySelector("#busca").addEventListener("input", e => { termoBusca = e.target.value; desenhar(); });
+  app.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+    filtroCat = c.dataset.cat;
+    app.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === c));
+    desenhar();
+  }));
+}
+
+function telaGuia(app, g){
+  const fav = favoritos.has(g.id);
+  app.innerHTML = `
+    <a class="back" href="#inicio">${icon("back")} Todas as situações</a>
+    <div class="cat-${g.cat}">
+      <div class="g-head">
+        <span class="tile-ic">${icon(g.icone)}</span>
+        <div><h1>${g.titulo}</h1><p>${CATEGORIAS[g.cat].nome}</p></div>
+      </div>
+
+      <div class="g-actions">
+        <a class="btn btn-red" href="tel:192">${icon("phone")} Ligar 192</a>
+        <button class="btn btn-ink" id="abrirFoco" type="button">${icon("steps")} Um passo por vez</button>
+        ${g.rcp ? `<a class="btn" href="#rcp">${icon("heart")} Guia de compressões</a>` : ""}
+        <button class="btn" id="fav" type="button" aria-pressed="${fav}">${icon("star")} ${fav ? "Salvo" : "Salvar"}</button>
+      </div>
+
+      ${g.urgente ? `<div class="alert alert-red"><h2>${icon("alert")} Ligue 192 agora</h2><ul>${g.ligar.map(l=>`<li>${l}</li>`).join("")}</ul></div>` : ""}
+
+      <div class="g-cols">
+        <div class="panel">
+          <h2>Como agir</h2>
+          <ol class="steps">${g.passos.map(([t,d]) => `<li><div><b>${t}</b><span>${d}</span></div></li>`).join("")}</ol>
+        </div>
+        <div style="display:grid;gap:14px">
+          <div class="panel"><h2>Como reconhecer</h2><ul class="signs">${g.sinais.map(s=>`<li>${s}</li>`).join("")}</ul></div>
+          <div class="alert alert-amber dont"><h2>${icon("close")} Não faça</h2><ul>${g.nao.map(n=>`<li>${n}</li>`).join("")}</ul></div>
+          ${!g.urgente ? `<div class="alert alert-red"><h2>${icon("phone")} Ligue 192 se</h2><ul>${g.ligar.map(l=>`<li>${l}</li>`).join("")}</ul></div>` : ""}
+          ${g.dica ? `<div class="alert alert-green tip"><h2>${icon("check")} Bom saber</h2><p style="margin:0">${g.dica}</p></div>` : ""}
+        </div>
+      </div>
+      <p class="source">Orientação educativa baseada em protocolos oficiais. Não substitui o atendimento de profissionais de saúde.</p>
+    </div>`;
+
+  app.querySelector("#fav").addEventListener("click", e => {
+    const b = e.currentTarget;
+    if (favoritos.has(g.id)) favoritos.delete(g.id); else favoritos.add(g.id);
+    salvarFavoritos();
+    const on = favoritos.has(g.id);
+    b.setAttribute("aria-pressed", on);
+    b.innerHTML = icon("star") + (on ? " Salvo" : " Salvar");
+  });
+  app.querySelector("#abrirFoco").addEventListener("click", () => abrirFoco(g));
+}
+
+function telaContatos(app){
+  app.innerHTML = `
+    <h1 class="view-title">Números de emergência</h1>
+    <p class="view-lead">Ligações gratuitas, de qualquer telefone, mesmo sem crédito. Toque para ligar.</p>
+    <div class="contacts">
+      ${CONTATOS.map(c => `
+        <a class="contact" href="tel:${c.tel || c.num}" style="--c:${c.cor}">
+          <span class="contact-num ${c.num.length > 4 ? "long" : ""}">${c.num}</span>
+          <span><b>${c.nome}</b><span>${c.desc}</span></span>
+          ${icon("phone")}
+        </a>`).join("")}
+    </div>
+    <div class="panel" style="margin-top:18px">
+      <h2>Ao ligar, informe</h2>
+      <ol class="steps cat-coracao">
+        <li><div><b>Onde você está</b><span>Endereço completo e um ponto de referência.</span></div></li>
+        <li><div><b>O que aconteceu</b><span>Por exemplo: “homem de uns 60 anos caiu e não responde”.</span></div></li>
+        <li><div><b>Como a pessoa está</b><span>Se responde, se respira, se está sangrando.</span></div></li>
+        <li><div><b>Não desligue primeiro</b><span>Espere o atendente encerrar e siga as instruções dele.</span></div></li>
+      </ol>
+    </div>`;
+}
+
+/* ---------- Ficha de emergência (fica só neste aparelho) ---------- */
+const CAMPOS_FICHA = [
+  {id:"nome", rot:"Nome completo"},
+  {id:"nascimento", rot:"Data de nascimento", tipo:"date"},
+  {id:"sangue", rot:"Tipo sanguíneo", tipo:"select", opcoes:["Não sei","A+","A−","B+","B−","AB+","AB−","O+","O−"]},
+  {id:"alergias", rot:"Alergias", tipo:"textarea", ajuda:"Medicamentos, alimentos, látex, picadas."},
+  {id:"remedios", rot:"Medicamentos de uso contínuo", tipo:"textarea"},
+  {id:"condicoes", rot:"Condições de saúde importantes", tipo:"textarea", ajuda:"Informações que a equipe de socorro precisa saber."},
+  {id:"contatoNome", rot:"Contato de emergência"},
+  {id:"contatoTel", rot:"Telefone do contato", tipo:"tel"}
+];
+function telaFicha(app){
+  const f = store.get("psb:ficha", {});
+  app.innerHTML = `
+    <h1 class="view-title">Minha ficha de emergência</h1>
+    <p class="view-lead">Mostre esta tela à equipe do SAMU ou a quem estiver ajudando. Os dados ficam salvos apenas neste aparelho e não são enviados a ninguém.</p>
+    <form class="form panel" id="fichaForm" novalidate>
+      <div class="row2">
+        ${CAMPOS_FICHA.slice(0,3).map(campoHTML).join("")}
+      </div>
+      ${CAMPOS_FICHA.slice(3,6).map(campoHTML).join("")}
+      <div class="row2">${CAMPOS_FICHA.slice(6).map(campoHTML).join("")}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-red" type="submit">${icon("check")} Salvar ficha</button>
+        <a class="btn" id="ligarContato" href="#">${icon("phone")} Ligar para o contato</a>
+        <span class="saved-ok" id="fichaMsg" role="status"></span>
+      </div>
+    </form>`;
+  const form = app.querySelector("#fichaForm");
+  CAMPOS_FICHA.forEach(c => { const el = form.elements[c.id]; if (el && f[c.id]) el.value = f[c.id]; });
+  const atualizarLink = () => {
+    const tel = (form.elements.contatoTel.value || "").replace(/[^\d+]/g,"");
+    const a = app.querySelector("#ligarContato");
+    if (tel){ a.href = "tel:" + tel; a.removeAttribute("aria-disabled"); a.style.opacity = 1; }
+    else { a.href = "#ficha"; a.setAttribute("aria-disabled","true"); a.style.opacity = .5; }
+  };
+  atualizarLink();
+  form.elements.contatoTel.addEventListener("input", atualizarLink);
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const dados = {};
+    CAMPOS_FICHA.forEach(c => dados[c.id] = form.elements[c.id].value.trim());
+    const ok = store.set("psb:ficha", dados);
+    const msg = app.querySelector("#fichaMsg");
+    msg.style.color = ok ? "var(--green)" : "var(--red-text)";
+    msg.textContent = ok ? "Ficha salva neste aparelho." : "Não foi possível salvar: o navegador bloqueou o armazenamento.";
+  });
+}
+function campoHTML(c){
+  let input;
+  if (c.tipo === "textarea") input = `<textarea id="${c.id}" name="${c.id}"></textarea>`;
+  else if (c.tipo === "select") input = `<select id="${c.id}" name="${c.id}">${c.opcoes.map(o=>`<option>${o}</option>`).join("")}</select>`;
+  else input = `<input id="${c.id}" name="${c.id}" type="${c.tipo || "text"}" ${c.tipo==="tel" ? 'inputmode="tel" autocomplete="tel"' : ""}>`;
+  return `<div class="field"><label for="${c.id}">${c.rot}</label>${input}${c.ajuda ? `<small>${c.ajuda}</small>` : ""}</div>`;
+}
+
+function telaSalvos(app){
+  const lista = GUIAS.filter(g => favoritos.has(g.id));
+  app.innerHTML = `
+    <h1 class="view-title">Guias salvos</h1>
+    <p class="view-lead">Deixe aqui as situações mais importantes para a sua casa, como engasgo em bebê se você tem filhos pequenos.</p>
+    <div class="grid">${lista.length ? lista.map(tileHTML).join("")
+      : `<div class="empty">Você ainda não salvou nenhum guia. Abra uma situação e toque em “Salvar”. <br><a href="#inicio">Ver todas as situações</a></div>`}</div>`;
+}
+
+/* =========================================================
+   G. MODO “UM PASSO POR VEZ”
+   ========================================================= */
+const foco = {el:document.getElementById("focus"), g:null, i:0, origem:null};
+document.getElementById("focusClose").innerHTML = icon("close");
+function abrirFoco(g){
+  foco.g = g; foco.i = 0; foco.origem = document.activeElement;
+  foco.el.classList.add("open"); document.body.style.overflow = "hidden";
+  desenharFoco(); document.getElementById("focusNext").focus();
+}
+function fecharFoco(){
+  foco.el.classList.remove("open"); document.body.style.overflow = "";
+  foco.origem?.focus();
+}
+function desenharFoco(){
+  const {g,i} = foco, total = g.passos.length;
+  document.getElementById("focusBars").innerHTML = g.passos.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("");
+  document.getElementById("focusN").textContent = i + 1;
+  document.getElementById("focusTitle").textContent = g.passos[i][0];
+  document.getElementById("focusD").textContent = g.passos[i][1];
+  document.getElementById("focusPrev").disabled = i === 0;
+  document.getElementById("focusPrev").style.opacity = i === 0 ? .4 : 1;
+  document.getElementById("focusNext").innerHTML = i === total - 1 ? "Concluir" : "Próximo passo";
+}
+document.getElementById("focusNext").addEventListener("click", () => {
+  if (foco.i < foco.g.passos.length - 1){ foco.i++; desenharFoco(); } else fecharFoco();
+});
+document.getElementById("focusPrev").addEventListener("click", () => { if (foco.i > 0){ foco.i--; desenharFoco(); } });
+document.getElementById("focusClose").addEventListener("click", fecharFoco);
+document.addEventListener("keydown", e => {
+  if (!foco.el.classList.contains("open")) return;
+  if (e.key === "Escape") fecharFoco();
+  if (e.key === "ArrowRight") document.getElementById("focusNext").click();
+  if (e.key === "ArrowLeft") document.getElementById("focusPrev").click();
+});
+
+/* =========================================================
+   H. GUIA DE COMPRESSÕES (metrônomo de RCP a 110/min)
+   ========================================================= */
+const BPM = 110, INTERVALO = 60000 / BPM;
+const rcp = {rodando:false, modo:"continuo", som:true, contagem:0, total:0, inicio:0, acumulado:0, beat:null, relogio:null, vent:null, wake:null, audio:null};
+
+function telaRCP(app){
+  app.innerHTML = `
+    <h1 class="view-title">Guia de compressões</h1>
+    <p class="view-lead">Comprima o centro do peito a cada batida: 5 a 6 cm de profundidade, deixando o peito voltar. Antes de começar, ligue 192.</p>
+    <div class="cpr">
+      <div class="cpr-stage">
+        <div class="seg" role="group" aria-label="Modo">
+          <button type="button" data-modo="continuo" aria-pressed="${rcp.modo==="continuo"}">Só compressões</button>
+          <button type="button" data-modo="30x2" aria-pressed="${rcp.modo==="30x2"}">30 + 2 ventilações</button>
+        </div>
+        <div class="dial" id="dial">
+          <div class="dial-ring"></div>
+          <div class="dial-core" id="dialCore">
+            <span class="dial-count" id="dialCount">0</span>
+            <span class="dial-label" id="dialLabel">Toque em Iniciar</span>
+          </div>
+        </div>
+        <div class="cpr-msg" id="cprMsg" role="status" aria-live="assertive"></div>
+        <div class="cpr-stats">
+          <div><b id="statTempo">00:00</b><span>tempo</span></div>
+          <div><b id="statTotal">0</b><span>compressões</span></div>
+          <div><b>${BPM}</b><span>por minuto</span></div>
+        </div>
+        <div class="cpr-ctrl">
+          <button class="btn btn-red" id="cprStart" type="button">${icon("play")} Iniciar</button>
+          <button class="btn" id="cprReset" type="button">Zerar</button>
+        </div>
+        <label class="toggle"><input type="checkbox" id="cprSom" ${rcp.som ? "checked" : ""}> Som de batida</label>
+        <a class="btn btn-red" href="tel:192" style="width:100%;max-width:420px">${icon("phone")} Ligar 192</a>
+      </div>
+      <div class="panel cat-coracao">
+        <h2>Lembretes</h2>
+        <ol class="steps">
+          <li><div><b>Mãos no centro do peito</b><span>Uma sobre a outra, dedos entrelaçados, braços esticados.</span></div></li>
+          <li><div><b>Use o peso do corpo</b><span>Ombros acima das mãos. Quem comprime com os braços cansa rápido.</span></div></li>
+          <li><div><b>Deixe o peito voltar</b><span>É nessa volta que o coração se enche de sangue.</span></div></li>
+          <li><div><b>Reveze a cada 2 minutos</b><span>O app avisa. A troca deve levar poucos segundos.</span></div></li>
+          <li><div><b>Chegou um DEA?</b><span>Ligue o aparelho e siga a voz dele. Pare as compressões só quando ele pedir.</span></div></li>
+        </ol>
+        <p class="source">O modo 30 + 2 é para quem tem treinamento em ventilação. Sem treinamento, use só compressões.</p>
+      </div>
+    </div>`;
+
+  app.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+    rcp.modo = b.dataset.modo;
+    app.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    rcp.contagem = 0; atualizarDial();
+  }));
+  app.querySelector("#cprStart").addEventListener("click", () => rcp.rodando ? pausarRCP() : iniciarRCP());
+  app.querySelector("#cprReset").addEventListener("click", () => {
+    pararRCP(); rcp.contagem = 0; rcp.total = 0; rcp.acumulado = 0; atualizarDial(); atualizarTempo();
+    document.getElementById("cprMsg").textContent = "";
+  });
+  app.querySelector("#cprSom").addEventListener("change", e => rcp.som = e.target.checked);
+  atualizarDial(); atualizarTempo();
+}
+
+function clique(forte){
+  if (!rcp.som) return;
+  try{
+    rcp.audio = rcp.audio || new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = rcp.audio, o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.value = forte ? 1320 : 880; o.type = "square";
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.07);
+    o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime + 0.08);
+  }catch(e){}
+}
+
+async function iniciarRCP(){
+  rcp.rodando = true; rcp.inicio = performance.now();
+  if (rcp.modo === "30x2" && rcp.contagem >= 30) rcp.contagem = 0;
+  try{ rcp.audio?.resume(); }catch(e){}
+  try{ if ("wakeLock" in navigator) rcp.wake = await navigator.wakeLock.request("screen"); }catch(e){}
+  const btn = document.getElementById("cprStart");
+  if (btn) btn.innerHTML = icon("pause") + " Pausar";
+  batida();
+  rcp.beat = setInterval(batida, INTERVALO);
+  rcp.relogio = setInterval(atualizarTempo, 250);
+}
+function pausarRCP(){
+  rcp.acumulado += rcp.rodando ? performance.now() - rcp.inicio : 0;
+  limparTimers();
+  rcp.rodando = false;
+  const btn = document.getElementById("cprStart");
+  if (btn) btn.innerHTML = icon("play") + " Continuar";
+  document.getElementById("dialLabel").textContent = "Pausado";
+}
+function pararRCP(){ if (rcp.rodando) pausarRCP(); limparTimers(); }
+function limparTimers(){
+  clearInterval(rcp.beat); clearInterval(rcp.relogio); clearTimeout(rcp.vent);
+  rcp.beat = rcp.relogio = rcp.vent = null;
+  try{ rcp.wake?.release(); }catch(e){} rcp.wake = null;
+  document.getElementById("dial")?.classList.remove("vent");
+}
+function batida(){
+  rcp.contagem++; rcp.total++;
+  const limite = rcp.modo === "30x2" ? 30 : null;
+  clique(limite && rcp.contagem === limite);
+  try{ navigator.vibrate?.(40); }catch(e){}
+  const core = document.getElementById("dialCore");
+  if (core){ core.classList.add("beat"); setTimeout(() => core.classList.remove("beat"), 110); }
+  atualizarDial();
+  if (limite && rcp.contagem >= limite){
+    clearInterval(rcp.beat); rcp.beat = null;
+    const dial = document.getElementById("dial");
+    dial?.classList.add("vent");
+    document.getElementById("dialCount").textContent = "2";
+    document.getElementById("dialLabel").textContent = "ventilações";
+    rcp.vent = setTimeout(() => {
+      if (!rcp.rodando) return;
+      dial?.classList.remove("vent"); rcp.contagem = 0;
+      batida(); rcp.beat = setInterval(batida, INTERVALO);
+    }, 5000);
+  }
+}
+function atualizarDial(){
+  const c = document.getElementById("dialCount"), l = document.getElementById("dialLabel");
+  if (!c) return;
+  c.textContent = rcp.modo === "30x2" ? rcp.contagem : (rcp.contagem % 1000);
+  l.textContent = rcp.rodando ? (rcp.modo === "30x2" ? "de 30" : "comprima") : (rcp.total ? "Pausado" : "Toque em Iniciar");
+  const t = document.getElementById("statTotal"); if (t) t.textContent = rcp.total;
+}
+let ultimoAviso = 0;
+function atualizarTempo(){
+  const ms = rcp.acumulado + (rcp.rodando ? performance.now() - rcp.inicio : 0);
+  const s = Math.floor(ms / 1000);
+  const el = document.getElementById("statTempo");
+  if (el) el.textContent = String(Math.floor(s/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0");
+  const ciclo = Math.floor(s / 120);
+  const msg = document.getElementById("cprMsg");
+  if (rcp.rodando && ciclo > 0 && ciclo !== ultimoAviso){
+    ultimoAviso = ciclo;
+    if (msg) msg.textContent = "2 minutos: se houver ajuda, troque quem está comprimindo.";
+    setTimeout(() => { if (msg) msg.textContent = ""; }, 8000);
+  }
+  if (s === 0) ultimoAviso = 0;
+}
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState === "visible" && rcp.rodando && !rcp.wake){
+    try{ rcp.wake = await navigator.wakeLock?.request("screen"); }catch(e){}
+  }
+});
+
+/* =========================================================
+   I. INICIALIZAÇÃO
+   ========================================================= */
+aplicarTema();
+rota();
+</script>
+</body>
+</html>
